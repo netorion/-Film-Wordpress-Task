@@ -1,6 +1,6 @@
 <?php
 /**
-* Register Film Post
+* Register Film Type
 *
 * @author Victor Sylva
 * @link http://www.netorionsolutions.com
@@ -30,6 +30,7 @@ function rv_film_cpt() {
       'description' => __( 'Film', 'engwp' ),
       'labels' => $labels,
       'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'revisions' ), 
+   // i removed comments to disable comments.
       'hierarchical' => false,
       'public' => true,
       'publicly_queryable' => true,
@@ -51,3 +52,67 @@ function rv_film_cpt() {
 
 }
 
+add_action( 'init', 'rv_create_film_taxonomies' );
+function rv_create_film_taxonomies() {
+
+   // Add new taxonomy, make it non-hierarchical (like tags)
+   $labels = array(
+      'name' => _x( 'Year Made', 'taxonomy general name' ),
+      'singular_name' => _x( 'Year', 'taxonomy singular name' ),
+      'search_items' => __( 'Search Years' ),
+      'all_items' => __( 'All Years' ),
+      'parent_item' => __( 'Parent Year' ),
+      'parent_item_colon' => __( 'Parent Year:' ),
+      'edit_item' => __( 'Edit Year' ),
+      'update_item' => __( 'Update Year' ),
+      'add_new_item' => __( 'Add New Year' ),
+      'new_item_name' => __( 'New Year Name' ),
+      'separate_items_with_commas' => __( 'Separate Years with commas' ),
+      'add_or_remove_items' => __( 'Add or remove Years' ),
+      'choose_from_most_used' => __( 'Choose from the most used Years' ),
+      'not_found' => __( 'No Years found.' ),
+      'menu_name' => __( 'Year Made' ),
+  );
+
+  $args = array(
+      'hierarchical' => false,
+      'labels' => $labels,
+      'show_ui' => true,
+      'show_admin_column' => true,
+      'update_count_callback' => '_update_post_term_count',
+   // 'query_var' => true,
+   // 'show_in_nav_menus' => false,
+      'public' => true,
+      'publicly_queryable' => true,
+      'has_archive' => true,
+  );
+
+  $years = array( 'rewrite' => array( 'slug' => 'film-year' ) );
+  $film_args = array_merge( $args, $years );
+
+  register_taxonomy( 'film_years', 'film', $film_args );
+
+}
+
+
+//* Create Film Type custom taxonomy (category)
+add_action( 'init', 'custom_type_taxonomy' );
+function custom_type_taxonomy() {
+
+   register_taxonomy( 'film-type', 'film',
+     array(
+        'labels' => array(
+        'name' => _x( 'Film Category', 'taxonomy general name', 'text_domain' ),
+        'add_new_item' => __( 'Add New Film Category', 'text_domain' ),
+        'new_item_name' => __( 'New Film Type', 'text_domain' ),
+     ),
+       'exclude_from_search' => true,
+       'has_archive' => true,
+       'hierarchical' => true,
+       'rewrite' => array( 'slug' => 'film-type', 'with_front' => false ),
+       'show_ui' => true,
+       'show_tagcloud' => false,
+   )
+);
+
+}
