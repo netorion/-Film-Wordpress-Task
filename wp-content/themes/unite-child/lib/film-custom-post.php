@@ -55,7 +55,7 @@ function rv_film_cpt() {
 add_action( 'init', 'rv_create_film_taxonomies' );
 function rv_create_film_taxonomies() {
 
-   // Add new taxonomy, make it non-hierarchical (like tags)
+   // Add new taxonomy
    $labels = array(
       'name' => _x( 'Year Made', 'taxonomy general name' ),
       'singular_name' => _x( 'Year', 'taxonomy singular name' ),
@@ -99,17 +99,17 @@ function rv_create_film_taxonomies() {
 add_action( 'init', 'custom_type_taxonomy' );
 function custom_type_taxonomy() {
 
-   register_taxonomy( 'film-type', 'film',
+   register_taxonomy( 'genre', 'film',
      array(
         'labels' => array(
-        'name' => _x( 'Film Category', 'taxonomy general name', 'text_domain' ),
-        'add_new_item' => __( 'Add New Film Category', 'text_domain' ),
-        'new_item_name' => __( 'New Film Type', 'text_domain' ),
+        'name' => _x( 'Genre', 'taxonomy general name', 'text_domain' ),
+        'add_new_item' => __( 'Add New Genre', 'text_domain' ),
+        'new_item_name' => __( 'New Genre', 'text_domain' ),
      ),
        'exclude_from_search' => true,
        'has_archive' => true,
        'hierarchical' => true,
-       'rewrite' => array( 'slug' => 'film-type', 'with_front' => false ),
+       'rewrite' => array( 'slug' => 'genre', 'with_front' => false ),
        'show_ui' => true,
        'show_tagcloud' => false,
    )
